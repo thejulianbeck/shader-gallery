@@ -3,10 +3,11 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+  <meta name="mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-capable" content="yes" />
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
   <meta name="theme-color" content="#05060a" />
-  <meta name="description" content="Julián's Shader Gallery — Lotes 1–2: 20 cyberpunk WebGL section backgrounds" />
+  <meta name="description" content="Julián's Shader Gallery — Lote 1, Lote 2 & Favoritos" />
   <title>Shader Gallery · Lotes 1–2</title>
   <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='6' fill='%2305060a'/%3E%3Ccircle cx='16' cy='16' r='6' fill='%2300f0ff'/%3E%3C/svg%3E" />
   <link rel="stylesheet" href="styles.css" />
@@ -24,22 +25,37 @@
 
   <canvas id="gl" aria-label="Shader canvas"></canvas>
 
+  <div class="empty-fav" id="emptyFav" hidden>
+    <div class="empty-fav-card">
+      <p class="empty-fav-title">Sin favoritos</p>
+      <p class="empty-fav-body">Marca shaders con ❤️ en Lote 1 o Lote 2. Plasma Veins y Scanline Fog vienen precargados.</p>
+    </div>
+  </div>
+
   <div class="chrome" id="chrome">
     <header class="top-bar">
       <div class="brand">
         <span class="brand-mark">◆</span>
         <span class="brand-text">SHADER GALLERY</span>
-        <span class="brand-lote" id="loteBadge">LOTE 1</span>
       </div>
-      <div class="counter" id="counter">01 / 20</div>
+      <div class="counter" id="counter">01 / 10</div>
     </header>
+
+    <nav class="section-tabs" id="sectionTabs" role="tablist" aria-label="Secciones">
+      <button type="button" class="tab active" role="tab" data-section="lote1" aria-selected="true">Lote 1</button>
+      <button type="button" class="tab" role="tab" data-section="lote2" aria-selected="false">Lote 2</button>
+      <button type="button" class="tab" role="tab" data-section="fav" aria-selected="false">Favoritos</button>
+    </nav>
 
     <button class="nav nav-prev" id="prev" type="button" aria-label="Previous shader">‹</button>
     <button class="nav nav-next" id="next" type="button" aria-label="Next shader">›</button>
 
     <footer class="bottom-bar">
       <div class="shader-meta">
-        <h1 class="shader-name" id="shaderName">Neon Rain</h1>
+        <div class="name-row">
+          <h1 class="shader-name" id="shaderName">Neon Rain</h1>
+          <button class="fav-btn" id="favBtn" type="button" aria-label="Favorito" aria-pressed="false">❤️</button>
+        </div>
         <p class="shader-mood" id="shaderMood">acid cyan · falling neon · night noir</p>
       </div>
       <div class="actions">
