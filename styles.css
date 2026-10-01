@@ -343,3 +343,13 @@ html, body {
   .dot, .nav, .btn-export { transition: none; }
 }
 
+
+.dots {
+  flex-wrap: wrap;
+  max-width: min(52vw, 280px);
+  justify-content: flex-end;
+}
+.dot {
+  width: 5px;
+  height: 5px;
+}

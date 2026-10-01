@@ -10,7 +10,8 @@
     "}"
   ].join("\n");
 
-  var shaders = window.SHADER_LOTE_1 || [];
+  var shaders = (window.SHADER_LOTE_1 || []).concat(window.SHADER_LOTE_2 || []);
+  var loteBadge = document.getElementById("loteBadge");
   var canvas = document.getElementById("gl");
   var fallback = document.getElementById("fallback");
   var chrome = document.getElementById("chrome");
@@ -159,6 +160,10 @@
     nameEl.textContent = s.name;
     moodEl.textContent = s.mood;
     counterEl.textContent = pad(index + 1) + " / " + pad(shaders.length);
+    if (loteBadge) {
+      var L = s.lote || (index < 10 ? 1 : 2);
+      loteBadge.textContent = "LOTE " + L;
+    }
     var dots = dotsEl.querySelectorAll(".dot");
     for (var i = 0; i < dots.length; i++) {
       dots[i].classList.toggle("active", i === index);
@@ -250,11 +255,14 @@
       "=== IGNARA UNIVERSE · SHADER EXPORT ===",
       "Name: " + s.name,
       "ID: " + s.id,
-      "Lote: 1",
+      "Lote: " + (s.lote || 1),
       "",
       "Mood / keywords:",
       "  " + s.mood,
       "  " + s.keywords.join(", "),
+      "",
+      "Traits:",
+      "  " + (s.traits && s.traits.length ? s.traits.join(", ") : s.keywords.join(", ")),
       "",
       "Color palette:",
       "  " + s.palette.join(" · "),

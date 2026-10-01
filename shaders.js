@@ -31,7 +31,8 @@ window.SHADER_LOTE_1 = [
       "streaks",
       "noir",
       "vertical"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "holographic-grid",
@@ -63,7 +64,8 @@ window.SHADER_LOTE_1 = [
       "density-medium",
       "floor",
       "flicker"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "chrome-voids",
@@ -95,7 +97,8 @@ window.SHADER_LOTE_1 = [
       "sparse",
       "specular",
       "magenta-rim"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "glitch-city",
@@ -127,7 +130,8 @@ window.SHADER_LOTE_1 = [
       "skyline",
       "noise",
       "scanline"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "plasma-veins",
@@ -159,7 +163,8 @@ window.SHADER_LOTE_1 = [
       "noise",
       "density-high",
       "violet"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "scanline-fog",
@@ -191,7 +196,8 @@ window.SHADER_LOTE_1 = [
       "soft",
       "density-low",
       "blue"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "circuit-pulse",
@@ -223,7 +229,8 @@ window.SHADER_LOTE_1 = [
       "grid",
       "nodes",
       "density-medium"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "violet-abyss",
@@ -255,7 +262,8 @@ window.SHADER_LOTE_1 = [
       "spiral",
       "sparse",
       "dust"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "data-stream",
@@ -287,7 +295,8 @@ window.SHADER_LOTE_1 = [
       "green",
       "columns",
       "density-high"
-    ]
+    ],
+    "lote": 1
   },
   {
     "id": "laser-aurora",
@@ -319,6 +328,7 @@ window.SHADER_LOTE_1 = [
       "magenta",
       "cyan",
       "soft"
-    ]
+    ],
+    "lote": 1
   }
 ];

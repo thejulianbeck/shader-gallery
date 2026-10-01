@@ -1,6 +1,6 @@
 # Shader Gallery · Lote 1
 
-Full-bleed swipe gallery of **10 cyberpunk WebGL background shaders** for Julián / Ignara Universe handoff.
+Full-bleed swipe gallery of **20 cyberpunk WebGL section backgrounds** (Lote 1 + Lote 2) for Julián / Ignara Universe handoff.
 
 ## Live
 
@@ -36,6 +36,21 @@ python3 -m http.server 8765
 8. Violet Abyss  
 9. Data Stream  
 10. Laser Aurora  
+
+## Shaders (Lote 2) — quiet section backgrounds
+
+Biased toward Plasma Veins / Scanline Fog restraint. Soft fields, low amplitude, muted neon. Glitch is micro RGB / soft tears / scan corruption — not Glitch City.
+
+1. Soft Vein Glow  
+2. Mist Scanfield  
+3. Micro Chromatic  
+4. Soft Tear Mist  
+5. Phosphor Grain  
+6. Quiet Aurora Wash  
+7. Temporal Whisper  
+8. Ghost Lattice  
+9. Signal Bloom Fog  
+10. Subpixel Drift  
 
 ## Stack
 
