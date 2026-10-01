@@ -10,21 +10,10 @@
     "}"
   ].join("\n");
 
-  var FAV_KEY = "shader-gallery-favs-v1";
-  var DEFAULT_FAVS = ["plasma-veins", "scanline-fog"];
-
-  var lote1 = window.SHADER_LOTE_1 || [];
-  var lote2 = window.SHADER_LOTE_2 || [];
-  var catalog = lote1.concat(lote2);
-  var byId = {};
-  for (var ci = 0; ci < catalog.length; ci++) {
-    byId[catalog[ci].id] = catalog[ci];
-  }
-
+  var shaders = (window.SHADER_LOTE_1 || []).concat(window.SHADER_LOTE_2 || []);
   var canvas = document.getElementById("gl");
   var fallback = document.getElementById("fallback");
   var chrome = document.getElementById("chrome");
-  var emptyFav = document.getElementById("emptyFav");
   var nameEl = document.getElementById("shaderName");
   var moodEl = document.getElementById("shaderMood");
   var counterEl = document.getElementById("counter");
@@ -37,72 +26,20 @@
   var closeExport = document.getElementById("closeExport");
   var copyExport = document.getElementById("copyExport");
   var copyStatus = document.getElementById("copyStatus");
-  var favBtn = document.getElementById("favBtn");
-  var sectionTabs = document.getElementById("sectionTabs");
 
   var gl = null;
-  var programsById = {};
+  var programs = [];
   var buffer = null;
-  var section = "lote1";
-  var shaders = [];
   var index = 0;
   var startTime = performance.now();
   var raf = 0;
   var running = true;
   var dprCap = 2;
-  var favIds = loadFavs();
-
-  function loadFavs() {
-    try {
-      var raw = localStorage.getItem(FAV_KEY);
-      if (raw === null) return DEFAULT_FAVS.slice();
-      var parsed = JSON.parse(raw);
-      if (!Array.isArray(parsed)) return DEFAULT_FAVS.slice();
-      return parsed.filter(function (id) { return !!byId[id]; });
-    } catch (e) {
-      return DEFAULT_FAVS.slice();
-    }
-  }
-
-  function saveFavs() {
-    try {
-      localStorage.setItem(FAV_KEY, JSON.stringify(favIds));
-    } catch (e) {}
-  }
-
-  function isFav(id) {
-    return favIds.indexOf(id) !== -1;
-  }
-
-  function toggleFav(id) {
-    var i = favIds.indexOf(id);
-    if (i === -1) favIds.push(id);
-    else favIds.splice(i, 1);
-    saveFavs();
-    if (section === "fav") {
-      setSection("fav", true);
-    } else {
-      updateFavBtn();
-    }
-  }
-
-  function listForSection(sec) {
-    if (sec === "lote2") return lote2.slice();
-    if (sec === "fav") {
-      var out = [];
-      for (var i = 0; i < favIds.length; i++) {
-        if (byId[favIds[i]]) out.push(byId[favIds[i]]);
-      }
-      return out;
-    }
-    return lote1.slice();
-  }
 
   function showFallback() {
     if (fallback) fallback.hidden = false;
     if (chrome) chrome.style.display = "none";
     if (canvas) canvas.style.display = "none";
-    if (emptyFav) emptyFav.hidden = true;
   }
 
   function compile(type, src) {
@@ -165,20 +102,17 @@
       -1, 1, 1, -1, 1, 1
     ]), gl.STATIC_DRAW);
 
-    programsById = {};
-    var any = false;
-    for (var i = 0; i < catalog.length; i++) {
-      var s = catalog[i];
-      var prog = linkProgram(s.fragment);
+    programs = [];
+    for (var i = 0; i < shaders.length; i++) {
+      var prog = linkProgram(shaders[i].fragment);
       if (!prog) {
-        console.error("Failed shader:", s.id);
-        programsById[s.id] = null;
+        console.error("Failed shader:", shaders[i].id);
+        programs.push(null);
       } else {
-        programsById[s.id] = prog;
-        any = true;
+        programs.push(prog);
       }
     }
-    if (!any) {
+    if (!programs.some(function (p) { return p; })) {
       showFallback();
       return false;
     }
@@ -197,24 +131,12 @@
     }
   }
 
-  function currentProg() {
-    var s = shaders[index];
-    if (!s) return null;
-    return programsById[s.id] || null;
-  }
-
   function draw(now) {
     if (!running) return;
     raf = requestAnimationFrame(draw);
     resize();
-    var prog = currentProg();
-    if (!prog) {
-      if (gl) {
-        gl.clearColor(0.02, 0.025, 0.04, 1);
-        gl.clear(gl.COLOR_BUFFER_BIT);
-      }
-      return;
-    }
+    var prog = programs[index];
+    if (!prog) return;
     var t = (now - startTime) * 0.001;
     gl.useProgram(prog.program);
     gl.bindBuffer(gl.ARRAY_BUFFER, buffer);
@@ -229,50 +151,9 @@
     return (n < 10 ? "0" : "") + n;
   }
 
-  function updateFavBtn() {
-    var s = shaders[index];
-    if (!favBtn) return;
-    if (!s) {
-      favBtn.classList.remove("active");
-      favBtn.setAttribute("aria-pressed", "false");
-      favBtn.disabled = true;
-      return;
-    }
-    favBtn.disabled = false;
-    var on = isFav(s.id);
-    favBtn.classList.toggle("active", on);
-    favBtn.setAttribute("aria-pressed", on ? "true" : "false");
-  }
-
-  function updateTabs() {
-    if (!sectionTabs) return;
-    var tabs = sectionTabs.querySelectorAll(".tab");
-    for (var i = 0; i < tabs.length; i++) {
-      var tab = tabs[i];
-      var on = tab.getAttribute("data-section") === section;
-      tab.classList.toggle("active", on);
-      tab.setAttribute("aria-selected", on ? "true" : "false");
-    }
-  }
-
-  function updateEmptyState() {
-    var empty = section === "fav" && shaders.length === 0;
-    if (emptyFav) emptyFav.hidden = !empty;
-    if (chrome) chrome.classList.toggle("is-empty", empty);
-    if (canvas) canvas.style.opacity = empty ? "0.25" : "1";
-  }
-
   function updateUI() {
-    updateTabs();
-    updateEmptyState();
     var s = shaders[index];
-    if (!s) {
-      nameEl.textContent = section === "fav" ? "Favoritos" : "—";
-      moodEl.textContent = section === "fav" ? "ningún shader marcado" : "";
-      counterEl.textContent = "00 / 00";
-      updateFavBtn();
-      return;
-    }
+    if (!s) return;
     nameEl.textContent = s.name;
     moodEl.textContent = s.mood;
     counterEl.textContent = pad(index + 1) + " / " + pad(shaders.length);
@@ -281,7 +162,6 @@
       dots[i].classList.toggle("active", i === index);
       dots[i].setAttribute("aria-selected", i === index ? "true" : "false");
     }
-    updateFavBtn();
   }
 
   function buildDots() {
@@ -297,21 +177,6 @@
         dotsEl.appendChild(b);
       })(i);
     }
-  }
-
-  function setSection(sec, keepId) {
-    var prevId = shaders[index] && shaders[index].id;
-    section = sec;
-    shaders = listForSection(section);
-    index = 0;
-    if (keepId && prevId) {
-      for (var i = 0; i < shaders.length; i++) {
-        if (shaders[i].id === prevId) { index = i; break; }
-      }
-    }
-    if (index >= shaders.length) index = 0;
-    buildDots();
-    updateUI();
   }
 
   function goTo(i) {
@@ -462,12 +327,6 @@
   function onTouchStart(e) {
     if (e.touches.length !== 1) return;
     if (!exportPanel.hidden) return;
-    if (e.target && e.target.closest && (
-      e.target.closest(".section-tabs") ||
-      e.target.closest(".fav-btn") ||
-      e.target.closest(".btn-export") ||
-      e.target.closest(".dot")
-    )) return;
     touching = true;
     touchX = e.touches[0].clientX;
     touchY = e.touches[0].clientY;
@@ -485,7 +344,6 @@
   function onTouchEnd(e) {
     if (!touching) return;
     touching = false;
-    if (!shaders.length) return;
     var t = e.changedTouches[0];
     var dx = t.clientX - touchX;
     var dy = t.clientY - touchY;
@@ -503,9 +361,6 @@
     if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); next(); }
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); prev(); }
     else if (e.key === "e" || e.key === "E") openExport();
-    else if (e.key === "1") setSection("lote1");
-    else if (e.key === "2") setSection("lote2");
-    else if (e.key === "3" || e.key === "f" || e.key === "F") setSection("fav");
   }
 
   function onVisibility() {
@@ -513,26 +368,20 @@
       running = false;
       if (raf) cancelAnimationFrame(raf);
       raf = 0;
-    } else {
-      if (!running) {
-        running = true;
-        raf = requestAnimationFrame(draw);
-      }
+    } else if (!running) {
+      running = true;
+      raf = requestAnimationFrame(draw);
     }
   }
 
   function boot() {
-    if (!catalog.length) {
+    if (!shaders.length) {
       showFallback();
       return;
     }
-    if (!lote2.length) {
-      console.warn("SHADER_LOTE_2 missing or empty — Lote 2 tab will be empty");
-    }
     if (!initGL()) return;
-
-    setSection("lote1");
-
+    buildDots();
+    updateUI();
     prevBtn.addEventListener("click", prev);
     nextBtn.addEventListener("click", next);
     exportBtn.addEventListener("click", openExport);
@@ -541,26 +390,6 @@
     exportPanel.addEventListener("click", function (e) {
       if (e.target === exportPanel) closeExportPanel();
     });
-
-    if (favBtn) {
-      favBtn.addEventListener("click", function (e) {
-        e.stopPropagation();
-        var s = shaders[index];
-        if (s) toggleFav(s.id);
-      });
-      favBtn.addEventListener("touchstart", function (e) { e.stopPropagation(); }, { passive: true });
-    }
-
-    if (sectionTabs) {
-      sectionTabs.addEventListener("click", function (e) {
-        var tab = e.target.closest(".tab");
-        if (!tab) return;
-        var sec = tab.getAttribute("data-section");
-        if (sec) setSection(sec);
-      });
-      sectionTabs.addEventListener("touchstart", function (e) { e.stopPropagation(); }, { passive: true });
-    }
-
     window.addEventListener("keydown", onKey);
     document.addEventListener("visibilitychange", onVisibility);
     canvas.addEventListener("touchstart", onTouchStart, { passive: true });

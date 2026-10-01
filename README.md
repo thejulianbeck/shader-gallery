@@ -1,6 +1,6 @@
 # Shader Gallery · Lote 1
 
-Full-bleed swipe gallery of **20 cyberpunk WebGL section backgrounds** (Lote 1 + Lote 2) for Julián / Ignara Universe handoff.
+Full-bleed swipe gallery of **20 cyberpunk WebGL section backgrounds** for Julián / Ignara Universe handoff. Continuous swipe (no lot tabs).
 
 ## Live
 
@@ -17,12 +17,10 @@ python3 -m http.server 8765
 
 ## Controls
 
-- **Section tabs:** Lote 1 · Lote 2 · Favoritos (also keys `1` / `2` / `3`)
-- **Swipe** left/right (touch)
+- **Swipe** left/right (touch) through all 20 shaders
 - **Arrow keys** or on-screen ‹ ›
-- **❤️** next to the name — toggle Favoritos (`localStorage` key `shader-gallery-favs-v1`; Plasma Veins + Scanline Fog pre-marked)
 - **EXPORT** — SPEC + GLSL + self-contained HTML for Ignara Universe
-- Dot indicators jump within the active section
+- Dot indicators jump to a shader
 - Animation **pauses** when the tab is hidden
 
 
