@@ -1,6 +1,4 @@
-/* Julián Shader Gallery — Lote 1 shader library (WebGL1-safe GLSL ES 1.00)
- * traits[] = learning signals for future lots (hearts bias toward; dislikes avoid).
- */
+/* Julián Shader Gallery — Lote 1 shader library (WebGL1-safe GLSL ES 1.00) */
 window.SHADER_LOTE_1 = [
   {
     "id": "neon-rain",

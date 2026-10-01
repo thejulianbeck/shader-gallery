@@ -19,32 +19,10 @@ python3 -m http.server 8765
 
 - **Swipe** left/right (touch)
 - **Arrow keys** or on-screen ‹ ›
-- **❤️ / 👎** next to the shader name — toggle like/dislike (mutually exclusive; tap again to clear)
 - **EXPORT** — SPEC + GLSL + self-contained HTML for Ignara Universe
-- **VOTES** — copyable learning JSON (`votes`, `traits`, `likedTraits`, `dislikedTraits`)
 - Dot indicators jump to a shader
 - Animation **pauses** when the tab is hidden
 
-## Ratings & learning
-
-Votes persist in `localStorage` under `shader-gallery-votes-v1`. Each shader carries `traits[]` (palette / density / noise / neon / grid / …).
-
-- **Hearts** → bias future lots toward those traits (`likedTraits`)
-- **Dislikes** → avoid regenerating similar looks (`dislikedTraits`)
-
-Export shape (VOTES button):
-
-```json
-{
-  "version": 1,
-  "votes": { "neon-rain": "like" },
-  "traits": { "neon-rain": ["neon", "rain", "cyan"] },
-  "liked": ["neon-rain"],
-  "disliked": [],
-  "likedTraits": ["neon", "rain", "cyan"],
-  "dislikedTraits": []
-}
-```
 
 ## Shaders (Lote 1)
 
