@@ -39,12 +39,21 @@
 
     <footer class="bottom-bar">
       <div class="shader-meta">
-        <h1 class="shader-name" id="shaderName">Neon Rain</h1>
+        <div class="name-row">
+          <h1 class="shader-name" id="shaderName">Neon Rain</h1>
+          <div class="rate" role="group" aria-label="Rate shader">
+            <button class="rate-btn rate-like" id="likeBtn" type="button" aria-label="Like" aria-pressed="false">❤️</button>
+            <button class="rate-btn rate-dislike" id="dislikeBtn" type="button" aria-label="Dislike" aria-pressed="false">👎</button>
+          </div>
+        </div>
         <p class="shader-mood" id="shaderMood">acid cyan · falling neon · night noir</p>
       </div>
       <div class="actions">
         <div class="dots" id="dots" role="tablist" aria-label="Shader index"></div>
-        <button class="btn-export" id="exportBtn" type="button">EXPORT</button>
+        <div class="action-btns">
+          <button class="btn-export btn-votes" id="votesBtn" type="button">VOTES</button>
+          <button class="btn-export" id="exportBtn" type="button">EXPORT</button>
+        </div>
       </div>
     </footer>
   </div>

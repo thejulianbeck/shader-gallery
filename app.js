@@ -26,6 +26,14 @@
   var closeExport = document.getElementById("closeExport");
   var copyExport = document.getElementById("copyExport");
   var copyStatus = document.getElementById("copyStatus");
+  var likeBtn = document.getElementById("likeBtn");
+  var dislikeBtn = document.getElementById("dislikeBtn");
+  var votesBtn = document.getElementById("votesBtn");
+  var exportTitle = document.querySelector(".export-head h2");
+
+  var VOTE_KEY = "shader-gallery-votes-v1";
+  /* Hearts bias future lots toward liked traits; dislikes avoid similar looks. */
+  var voteStore = loadVotes();
 
   var gl = null;
   var programs = [];
@@ -153,6 +161,96 @@
     return (n < 10 ? "0" : "") + n;
   }
 
+
+  function loadVotes() {
+    try {
+      var raw = localStorage.getItem(VOTE_KEY);
+      if (!raw) return { version: 1, votes: {} };
+      var parsed = JSON.parse(raw);
+      if (!parsed || typeof parsed !== "object") return { version: 1, votes: {} };
+      if (!parsed.votes || typeof parsed.votes !== "object") parsed.votes = {};
+      parsed.version = 1;
+      return parsed;
+    } catch (e) {
+      return { version: 1, votes: {} };
+    }
+  }
+
+  function saveVotes() {
+    try {
+      localStorage.setItem(VOTE_KEY, JSON.stringify({ version: 1, votes: voteStore.votes }));
+    } catch (e) {}
+  }
+
+  function getTraits(s) {
+    if (s.traits && s.traits.length) return s.traits.slice();
+    return (s.keywords || []).slice();
+  }
+
+  function unique(arr) {
+    var seen = {};
+    var out = [];
+    for (var i = 0; i < arr.length; i++) {
+      if (!seen[arr[i]]) { seen[arr[i]] = 1; out.push(arr[i]); }
+    }
+    return out;
+  }
+
+  function buildLearningSummary() {
+    var votes = {};
+    var traits = {};
+    var likedTraits = [];
+    var dislikedTraits = [];
+    var likedIds = [];
+    var dislikedIds = [];
+    for (var i = 0; i < shaders.length; i++) {
+      var s = shaders[i];
+      traits[s.id] = getTraits(s);
+      var v = voteStore.votes[s.id];
+      if (v === "like" || v === "dislike") {
+        votes[s.id] = v;
+        if (v === "like") {
+          likedIds.push(s.id);
+          likedTraits = likedTraits.concat(traits[s.id]);
+        } else {
+          dislikedIds.push(s.id);
+          dislikedTraits = dislikedTraits.concat(traits[s.id]);
+        }
+      }
+    }
+    return {
+      version: 1,
+      votes: votes,
+      traits: traits,
+      liked: likedIds,
+      disliked: dislikedIds,
+      likedTraits: unique(likedTraits),
+      dislikedTraits: unique(dislikedTraits),
+      note: "Hearts bias future lots toward likedTraits; dislikes avoid regenerating similar looks (dislikedTraits)."
+    };
+  }
+
+  function setVote(id, value) {
+    var current = voteStore.votes[id];
+    if (current === value) {
+      delete voteStore.votes[id];
+    } else {
+      voteStore.votes[id] = value;
+    }
+    saveVotes();
+    updateRateUI();
+  }
+
+  function updateRateUI() {
+    var s = shaders[index];
+    if (!s || !likeBtn || !dislikeBtn) return;
+    var v = voteStore.votes[s.id];
+    likeBtn.classList.toggle("active", v === "like");
+    dislikeBtn.classList.toggle("active", v === "dislike");
+    likeBtn.setAttribute("aria-pressed", v === "like" ? "true" : "false");
+    dislikeBtn.setAttribute("aria-pressed", v === "dislike" ? "true" : "false");
+  }
+
   function updateUI() {
     var s = shaders[index];
     if (!s) return;
@@ -164,6 +262,7 @@
       dots[i].classList.toggle("active", i === index);
       dots[i].setAttribute("aria-selected", i === index ? "true" : "false");
     }
+    updateRateUI();
   }
 
   function buildDots() {
@@ -284,7 +383,15 @@
   function openExport() {
     var s = shaders[index];
     if (!s) return;
+    if (exportTitle) exportTitle.textContent = "Export Spec";
     exportBody.textContent = buildExportText(s);
+    copyStatus.textContent = "";
+    exportPanel.hidden = false;
+  }
+
+  function openVotes() {
+    if (exportTitle) exportTitle.textContent = "Votes · Learning JSON";
+    exportBody.textContent = JSON.stringify(buildLearningSummary(), null, 2);
     copyStatus.textContent = "";
     exportPanel.hidden = false;
   }
@@ -364,6 +471,7 @@
     if (e.key === "ArrowRight" || e.key === "ArrowDown") { e.preventDefault(); next(); }
     else if (e.key === "ArrowLeft" || e.key === "ArrowUp") { e.preventDefault(); prev(); }
     else if (e.key === "e" || e.key === "E") openExport();
+    else if (e.key === "v" || e.key === "V") openVotes();
   }
 
   function onVisibility() {
@@ -391,6 +499,23 @@
     prevBtn.addEventListener("click", prev);
     nextBtn.addEventListener("click", next);
     exportBtn.addEventListener("click", openExport);
+    if (votesBtn) votesBtn.addEventListener("click", openVotes);
+    if (likeBtn) {
+      likeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var s = shaders[index];
+        if (s) setVote(s.id, "like");
+      });
+      likeBtn.addEventListener("touchstart", function (e) { e.stopPropagation(); }, { passive: true });
+    }
+    if (dislikeBtn) {
+      dislikeBtn.addEventListener("click", function (e) {
+        e.stopPropagation();
+        var s = shaders[index];
+        if (s) setVote(s.id, "dislike");
+      });
+      dislikeBtn.addEventListener("touchstart", function (e) { e.stopPropagation(); }, { passive: true });
+    }
     closeExport.addEventListener("click", closeExportPanel);
     copyExport.addEventListener("click", copyToClipboard);
     exportPanel.addEventListener("click", function (e) {

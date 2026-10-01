@@ -342,3 +342,68 @@ html, body {
 @media (prefers-reduced-motion: reduce) {
   .dot, .nav, .btn-export { transition: none; }
 }
+
+.name-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 4px;
+  flex-wrap: wrap;
+}
+
+.shader-name { margin-bottom: 0; }
+
+.rate {
+  display: flex;
+  gap: 6px;
+  align-items: center;
+  pointer-events: auto;
+}
+
+.rate-btn {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--glass-border);
+  background: var(--glass);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  font-size: 16px;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0.7;
+  transition: opacity 0.15s, border-color 0.15s, box-shadow 0.15s, transform 0.15s;
+}
+
+.rate-btn:hover, .rate-btn:focus-visible {
+  opacity: 1;
+  outline: none;
+}
+
+.rate-btn.active.rate-like {
+  opacity: 1;
+  border-color: rgba(255, 43, 214, 0.55);
+  box-shadow: 0 0 14px rgba(255, 43, 214, 0.35);
+  transform: scale(1.08);
+}
+
+.rate-btn.active.rate-dislike {
+  opacity: 1;
+  border-color: rgba(180, 200, 220, 0.45);
+  box-shadow: 0 0 12px rgba(120, 140, 160, 0.3);
+  transform: scale(1.08);
+}
+
+.action-btns {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.btn-votes {
+  letter-spacing: 0.14em;
+  opacity: 0.85;
+}
