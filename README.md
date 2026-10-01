@@ -4,7 +4,7 @@ Full-bleed swipe gallery of **10 cyberpunk WebGL background shaders** for Juliá
 
 ## Live
 
-GitHub Pages (after deploy): https://thejulianbeck.github.io/shader-gallery/
+**Live:** https://thejulianbeck.github.io/shader-gallery/
 
 ## Local
 
