@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Plasma Veins · Lab</title>
+<link rel="stylesheet" href="plasma-lab.css" />
+</head>
+<body>
+<canvas id="c"></canvas>
+<div id="fallback" hidden>WebGL no está disponible en este navegador, así que no puedo mostrar el shader en vivo. Igual puedes ajustar los valores y exportarlos.</div>
+<button id="togglePanel" class="fab" aria-expanded="true">Ocultar panel</button>
+<aside id="panel">
+  <header class="ph">
+    <strong>Plasma Veins · Lab</strong>
+    <button id="collapse" class="ghost" aria-label="Colapsar">–</button>
+  </header>
+  <div class="pbody">
+    <div class="row presets" id="presets"></div>
+    <div class="row btns">
+      <button id="reset">Reset</button>
+      <button id="random">Aleatorio suave</button>
+    </div>
+    <div id="controls"></div>
+    <div class="row btns">
+      <button id="copy">Copiar configuración</button>
+      <button id="export" class="accent">EXPORT</button>
+    </div>
+    <p class="hint">Se guarda solo en este navegador y en el enlace (#). Comparte la URL para reproducirla.</p>
+    <p class="hint"><a href="./">← Volver a la galería</a></p>
+  </div>
+</aside>
+<div id="exportPanel" hidden>
+  <div class="ebox">
+    <div class="ebar"><strong>EXPORT · Ignara Universe</strong><span><button id="copyExport">Copiar</button> <button id="closeExport" class="ghost">Cerrar</button></span></div>
+    <pre id="exportBody"></pre>
+  </div>
+</div>
+<div id="toast" hidden></div>
+<script src="plasma-lab.js"></script>
+</body>
+</html>

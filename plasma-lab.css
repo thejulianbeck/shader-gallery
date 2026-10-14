@@ -1,0 +1,43 @@
+html,body{margin:0;height:100%;background:#0a0314;overflow:hidden;font:13px/1.35 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;color:#e8e2ee;-webkit-text-size-adjust:100%}
+canvas{position:fixed;inset:0;width:100%;height:100%;display:block}
+#fallback{position:fixed;inset:0;display:flex;align-items:center;justify-content:center;padding:32px;text-align:center;color:#c9b9d6}
+button{font:inherit;color:#eee;background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.14);border-radius:8px;padding:8px 10px;min-height:36px;cursor:pointer;-webkit-tap-highlight-color:transparent}
+button:hover{background:rgba(255,255,255,.14)}
+button.ghost{background:none;border-color:transparent}
+button.accent{background:rgba(255,31,143,.25);border-color:rgba(255,31,143,.5)}
+button.on{border-color:rgba(255,107,203,.8);background:rgba(255,107,203,.18)}
+.fab{position:fixed;z-index:20;right:12px;top:calc(12px + env(safe-area-inset-top));background:rgba(10,4,18,.6);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px)}
+#panel{position:fixed;z-index:10;top:0;right:0;bottom:0;width:320px;background:rgba(10,4,18,.78);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);border-left:1px solid rgba(255,255,255,.08);display:flex;flex-direction:column;transition:transform .25s ease}
+#panel.hidden{transform:translateX(105%)}
+#panel.collapsed .pbody{display:none}
+.ph{display:flex;justify-content:space-between;align-items:center;padding:14px 14px 6px;padding-top:calc(56px + env(safe-area-inset-top))}
+.pbody{overflow-y:auto;-webkit-overflow-scrolling:touch;padding:0 14px calc(16px + env(safe-area-inset-bottom))}
+.row{display:flex;gap:6px;flex-wrap:wrap;margin:8px 0}
+.btns button{flex:1}
+.presets button{flex:1 1 45%;font-size:12px}
+.grp{margin-top:12px;font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:#a58fb8}
+.ctl{margin:8px 0}
+.ctl label{display:flex;justify-content:space-between;color:#d8cfe0}
+.ctl output{color:#a58fb8;font-variant-numeric:tabular-nums}
+input[type=range]{width:100%;height:28px;margin:2px 0;-webkit-appearance:none;appearance:none;background:transparent;touch-action:pan-y}
+input[type=range]::-webkit-slider-runnable-track{height:4px;background:rgba(255,255,255,.15);border-radius:2px}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-9px;border-radius:50%;background:#ff6bcb;border:2px solid #1a0530}
+input[type=range]::-moz-range-track{height:4px;background:rgba(255,255,255,.15);border-radius:2px}
+input[type=range]::-moz-range-thumb{width:20px;height:20px;border-radius:50%;background:#ff6bcb;border:2px solid #1a0530}
+.colors{display:grid;grid-template-columns:repeat(4,1fr);gap:6px}
+.colors label{display:flex;flex-direction:column;align-items:center;font-size:11px;color:#c9b9d6;gap:4px}
+input[type=color]{width:44px;height:36px;border:1px solid rgba(255,255,255,.2);border-radius:8px;background:none;padding:2px}
+.hint{color:#8d7c9c;font-size:11px}
+.hint a{color:#c9b9d6}
+#exportPanel{position:fixed;inset:0;z-index:30;background:rgba(0,0,0,.7);display:flex;align-items:center;justify-content:center;padding:12px}
+#exportPanel[hidden],#toast[hidden],#fallback[hidden]{display:none}
+.ebox{background:#0d0616;border:1px solid rgba(255,255,255,.12);border-radius:12px;width:min(900px,100%);max-height:90vh;display:flex;flex-direction:column}
+.ebar{display:flex;justify-content:space-between;align-items:center;padding:10px 12px;border-bottom:1px solid rgba(255,255,255,.08)}
+#exportBody{margin:0;padding:12px;overflow:auto;font:11px/1.4 ui-monospace,Menlo,monospace;white-space:pre-wrap;word-break:break-all;-webkit-user-select:text;user-select:text}
+#toast{position:fixed;z-index:40;left:50%;bottom:calc(24px + env(safe-area-inset-bottom));transform:translateX(-50%);background:rgba(20,8,30,.92);border:1px solid rgba(255,255,255,.15);padding:8px 14px;border-radius:999px}
+@media (max-width:700px){
+  #panel{top:auto;left:0;width:auto;max-height:58vh;border-left:0;border-top:1px solid rgba(255,255,255,.1);border-radius:16px 16px 0 0}
+  #panel.hidden{transform:translateY(105%)}
+  .ph{padding-top:12px}
+  .ph::before{content:"";position:absolute;left:50%;top:6px;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:rgba(255,255,255,.25)}
+}
