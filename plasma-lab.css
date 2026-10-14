@@ -41,3 +41,6 @@ input[type=color]{width:44px;height:36px;border:1px solid rgba(255,255,255,.2);b
   .ph{padding-top:12px}
   .ph::before{content:"";position:absolute;left:50%;top:6px;width:36px;height:4px;margin-left:-18px;border-radius:2px;background:rgba(255,255,255,.25)}
 }
+#logo{position:fixed;z-index:5;left:50%;top:50%;transform:translate(-50%,-50%);width:26vw;max-width:360px;height:auto;filter:brightness(0) invert(1);pointer-events:none;opacity:0;transition:opacity .3s ease}
+body.panel-hidden #logo{opacity:1}
+@media (max-width:700px){#logo{width:45vw}}

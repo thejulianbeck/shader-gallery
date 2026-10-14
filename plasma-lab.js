@@ -28,7 +28,8 @@
     { k: "octaves", label: "Octavas de ruido", min: 1, max: 6, step: 1, def: 4 },
     { g: "Acabado" },
     { k: "grain", label: "Grano", min: 0.0, max: 0.15, step: 0.001, def: 0.0 },
-    { k: "vignette", label: "Viñeta", min: 0.0, max: 1.0, step: 0.01, def: 1.0 }
+    { k: "vignette", label: "Viñeta", min: 0.0, max: 1.0, step: 0.01, def: 1.0 },
+    { k: "sheen", label: "Brillo aceitoso (iridiscencia)", min: 0.0, max: 1.0, step: 0.01, def: 0.0 }
   ];
   var SLIDERS = PARAMS.filter(function (p) { return p.k; });
 
@@ -45,8 +46,16 @@
     "Sutil para fondo": { intensity: 0.55, contrast: 0.75, saturation: 0.7, glow: 0.25, layerB: 0.4, speed: 0.15, pulseAmp: 0.1, pulseFreq: 2.0, scale: 1.6, thickness: 1.4, warp: 0.8, octaves: 3, grain: 0.02, vignette: 0.6, colBg: "#08030f" },
     "Profundo": { colA: "#a0156b", colB: "#3a0fb0", colH: "#d96bc0", colBg: "#050109", intensity: 0.8, contrast: 1.2, saturation: 0.9, glow: 0.5, layerB: 0.8, speed: 0.22, pulseAmp: 0.2, pulseFreq: 3.0, scale: 2.6, thickness: 0.8, warp: 1.3, octaves: 5, grain: 0.015, vignette: 1.0 },
     "Cálido": { colA: "#e8455a", colB: "#b0306a", colH: "#ffb48a", colBg: "#120508", intensity: 0.85, contrast: 0.95, saturation: 0.85, glow: 0.55, layerB: 0.5, speed: 0.25, pulseAmp: 0.18, pulseFreq: 3.0, scale: 2.0, thickness: 1.15, warp: 1.0, octaves: 4, grain: 0.02, vignette: 0.8 },
-    "Niebla magenta": { intensity: 0.5, contrast: 0.6, saturation: 0.6, glow: 0.15, layerB: 0.9, speed: 0.12, pulseAmp: 0.05, pulseFreq: 1.5, scale: 1.2, thickness: 2.2, warp: 0.6, octaves: 3, grain: 0.03, vignette: 0.5 }
+    "Niebla magenta": { intensity: 0.5, contrast: 0.6, saturation: 0.6, glow: 0.15, layerB: 0.9, speed: 0.12, pulseAmp: 0.05, pulseFreq: 1.5, scale: 1.2, thickness: 2.2, warp: 0.6, octaves: 3, grain: 0.03, vignette: 0.5 },
+    // ---- Veneno · Cyberpunk (calmados) ----
+    "Ácido tóxico": { colA: "#5fd62a", colB: "#1d3a0c", colH: "#c8ff6a", colBg: "#030602", intensity: 0.7, contrast: 0.85, saturation: 0.85, glow: 0.35, layerB: 0.25, speed: 0.1, pulseAmp: 0.06, pulseFreq: 1.2, scale: 2.4, thickness: 0.75, warp: 0.55, octaves: 4, grain: 0.015, vignette: 0.85 },
+    "Víbora violeta": { colA: "#7a2fd0", colB: "#2a0d4a", colH: "#7dff9a", colBg: "#06030b", intensity: 0.75, contrast: 0.9, saturation: 0.8, glow: 0.45, layerB: 0.6, speed: 0.12, pulseAmp: 0.08, pulseFreq: 1.5, scale: 1.8, thickness: 1.1, warp: 0.7, octaves: 4, grain: 0.01, vignette: 0.9 },
+    "Neón cian venenoso": { colA: "#16c4d8", colB: "#0b2a40", colH: "#d4ff3a", colBg: "#020609", intensity: 0.65, contrast: 0.95, saturation: 0.9, glow: 0.3, layerB: 0.35, speed: 0.08, pulseAmp: 0.05, pulseFreq: 0.8, scale: 3.4, thickness: 0.6, warp: 0.45, octaves: 3, grain: 0.02, vignette: 0.7 },
+    "Lodo iridiscente": { colA: "#3c5a3a", colB: "#24123a", colH: "#9fe8c8", colBg: "#040405", intensity: 0.6, contrast: 0.8, saturation: 0.75, glow: 0.2, layerB: 0.7, speed: 0.06, pulseAmp: 0.04, pulseFreq: 0.6, scale: 1.3, thickness: 2.0, warp: 0.5, octaves: 3, grain: 0.025, vignette: 0.75, sheen: 0.55 },
+    "Toxina bioluminiscente": { colA: "#1fd6a0", colB: "#06222a", colH: "#b8fff0", colBg: "#01050a", intensity: 0.6, contrast: 0.9, saturation: 0.8, glow: 0.7, layerB: 0.2, speed: 0.07, pulseAmp: 0.18, pulseFreq: 0.9, scale: 2.0, thickness: 0.55, warp: 0.6, octaves: 4, grain: 0.01, vignette: 1.0 },
+    "Corrosivo magenta-lima": { colA: "#d02a8a", colB: "#3c4a08", colH: "#c8f04a", colBg: "#070308", intensity: 0.65, contrast: 0.85, saturation: 0.8, glow: 0.3, layerB: 0.45, speed: 0.11, pulseAmp: 0.07, pulseFreq: 1.4, scale: 2.8, thickness: 1.3, warp: 0.8, octaves: 4, grain: 0.02, vignette: 0.8, sheen: 0.15 }
   };
+  var GROUP2_START = "Ácido tóxico";
 
   // Tasteful ranges for "Aleatorio suave"
   var SOFT = {
@@ -85,6 +94,7 @@
     "  col += u_colH * pow(veins, 4.0) * u_glow * u_intensity;",
     "  float pulse = (1.0 - u_pulseAmp) + u_pulseAmp * sin(t * u_pulseFreq + f * 6.0);",
     "  col *= pulse;",
+    "  col += (0.5 + 0.5 * cos(6.2832 * (f * 1.6 + 0.25 * r.x + vec3(0.0, 0.33, 0.67) + t * 0.05))) * pow(f, 1.5) * 0.35 * u_sheen * u_intensity;",
     "  col *= mix(1.0, smoothstep(1.35, 0.2, length(uv)), u_vignette);",
     "  float l = dot(col, vec3(0.299, 0.587, 0.114));",
     "  col = mix(vec3(l), col, u_saturation);",
@@ -125,7 +135,11 @@
     try { return JSON.parse(decodeURIComponent(m[1])); } catch (e) { return null; }
   }
   function readStore() { try { return JSON.parse(localStorage.getItem(STORE_KEY)); } catch (e) { return null; } }
-  var cfg = sanitize(readHash() || readStore() || null);
+  function readPresetHash() {
+    var m = location.hash.match(/p=([^&]+)/); if (!m) return null;
+    var n = decodeURIComponent(m[1]); return PRESETS[n] ? Object.assign(defaults(), PRESETS[n]) : null;
+  }
+  var cfg = sanitize(readPresetHash() || readHash() || readStore() || null);
   var saveTimer = 0;
   function persist() {
     clearTimeout(saveTimer);
@@ -175,6 +189,7 @@
   var presetBtns = {};
   var presetsEl = document.getElementById("presets");
   Object.keys(PRESETS).forEach(function (name) {
+    if (name === GROUP2_START) { var g2 = document.createElement("div"); g2.className = "grp"; g2.style.flexBasis = "100%"; g2.textContent = "Veneno · Cyberpunk"; presetsEl.appendChild(g2); }
     var b = document.createElement("button"); b.textContent = name;
     b.addEventListener("click", function () { cfg = sanitize(Object.assign(defaults(), PRESETS[name])); syncUI(); persist(); toast("Preset: " + name); });
     presetsEl.appendChild(b); presetBtns[name] = b;
@@ -208,6 +223,7 @@
   var toggle = document.getElementById("togglePanel");
   toggle.addEventListener("click", function () {
     var hid = panel.classList.toggle("hidden");
+    document.body.classList.toggle("panel-hidden", hid);
     toggle.textContent = hid ? "Mostrar panel" : "Ocultar panel";
     toggle.setAttribute("aria-expanded", String(!hid));
   });
@@ -215,6 +231,7 @@
   collapse.addEventListener("click", function () {
     var c = panel.classList.toggle("collapsed"); collapse.textContent = c ? "+" : "–";
   });
+  if (/(^#|&)hide=1/.test(location.hash)) toggle.click();
   document.addEventListener("keydown", function (e) {
     if (e.target && /INPUT|TEXTAREA/.test(e.target.tagName) && e.target.type !== "range") return;
     if (e.key === "h" || e.key === "H") toggle.click();
